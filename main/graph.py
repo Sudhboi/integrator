@@ -10,7 +10,8 @@ def pltgrph(begin, end, h, f):
     plt.plot(x, np.linspace(0, 0, elms+ 1), color='black', linestyle='dotted')
     plt.plot(np.linspace(end, end, elms+1), np.linspace(0, f(end), elms+1), linestyle="--", color='red')
     plt.plot(np.linspace(begin, begin, elms+1), np.linspace(0, f(begin), elms+1), linestyle='--', color='red')
-    plt.show()
     plt.grid()
+    plt.show()
+    
 
-pltgrph(0, 3, 0.1, lambda x: pow(x, 2))
+pltgrph(0, 3, 0.1, lambda x: pow(x, 2) - x)
