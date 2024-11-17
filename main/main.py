@@ -2,8 +2,7 @@ from tkinter import *
 from tkinter import ttk
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.figure import Figure 
-from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk) 
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg) 
 from matplotlib import rcParams
 rcParams['axes.titlepad'] = 15
 
@@ -25,12 +24,7 @@ def pltgrph(f, begin, end, h):
     plt.plot(x, np.linspace(0, 0, elms+ 1), color='black', linestyle='dotted')
     plt.plot(np.linspace(end, end, elms+1), np.linspace(0, f(end), elms+1), linestyle="--", color='red')
     plt.plot(np.linspace(begin, begin, elms+1), np.linspace(0, f(begin), elms+1), linestyle='--', color='red')
-    plt.fill_between(
-        x= x, 
-        y1= f(x), 
-        where= (begin < x)&(x < end),
-        color= "b",
-        alpha= 0.2)
+    plt.fill_between(x= x, y1= f(x), where= (begin < x)&(x < end),color= "b",alpha= 0.2)
     plt.title("The value of the integral within the given bounds is {}".format(round(integral(f, begin, end, h), 4)))
     plt.grid(True)
 
@@ -41,13 +35,9 @@ def pltgrph(f, begin, end, h):
 def compute(*args):
     try:
         f = functionInput.get()
-        print(f)
         a = eval(aval.get())
         b = eval(bval.get())
         dx = eval(dxval.get())
-        print(a, b, dx)
-        integralValue = round(integral(eval("lambda x: " + f), a, b, dx), 4)
-        outputValue.set("The value of the integral within the given bounds is {}".format(integralValue))
         pltgrph(eval("lambda x: " + f), a, b, dx)
     except ValueError:
         pass
@@ -96,8 +86,6 @@ comButton.grid(column=5, row=2, rowspan=2, sticky=(N, W, E, S))
 
 graphFrame = ttk.Frame(mainframe, borderwidth=5, relief="ridge")
 graphFrame.grid(column= 0, row= 3, columnspan=6, sticky=(N, W, E, S))
-
-outputValue = StringVar()
 
 for child in inputFrame.winfo_children():
     child.grid_configure(padx=5, pady=5)
