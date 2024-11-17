@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure 
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk) 
+from matplotlib import rcParams
+rcParams['axes.titlepad'] = 15
 
 def integral(f, begin, end, dx):
     area = 0
@@ -23,6 +25,13 @@ def pltgrph(f, begin, end, h):
     plt.plot(x, np.linspace(0, 0, elms+ 1), color='black', linestyle='dotted')
     plt.plot(np.linspace(end, end, elms+1), np.linspace(0, f(end), elms+1), linestyle="--", color='red')
     plt.plot(np.linspace(begin, begin, elms+1), np.linspace(0, f(begin), elms+1), linestyle='--', color='red')
+    plt.fill_between(
+        x= x, 
+        y1= f(x), 
+        where= (begin < x)&(x < end),
+        color= "b",
+        alpha= 0.2)
+    plt.title("The value of the integral within the given bounds is {}".format(round(integral(f, begin, end, h), 4)))
     plt.grid(True)
 
     canvas = FigureCanvasTkAgg(fig, master = graphFrame)
@@ -43,7 +52,7 @@ def compute(*args):
     except ValueError:
         pass
     except Exception as e:
-        print(e)
+        functionInput.set("Invalid / Non Integrable Function")
 
 root = Tk()
 root.title("Integrator")
@@ -89,8 +98,6 @@ graphFrame = ttk.Frame(mainframe, borderwidth=5, relief="ridge")
 graphFrame.grid(column= 0, row= 3, columnspan=6, sticky=(N, W, E, S))
 
 outputValue = StringVar()
-outputLabel = ttk.Label(mainframe, textvariable=outputValue)
-outputLabel.grid(column=0, row=4, columnspan=6)
 
 for child in inputFrame.winfo_children():
     child.grid_configure(padx=5, pady=5)
